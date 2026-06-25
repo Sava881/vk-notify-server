@@ -7,12 +7,21 @@ app.use(cors());
 app.use(express.json());
 
 const VK_GROUP_TOKEN = process.env.VK_GROUP_TOKEN;
+const APP_SECRET = process.env.APP_SECRET;
 
 const ADMIN_IDS = [
   54652177
 ];
 
 app.post("/notify-admins", async (req, res) => {
+
+if (req.headers["x-app-secret"] !== APP_SECRET) {
+    return res.status(401).json({
+        ok: false,
+        error: "Unauthorized"
+    });
+}
+
   try {
     const data = req.body;
 
