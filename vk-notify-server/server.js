@@ -41,10 +41,17 @@ if (req.headers["x-app-secret"] !== APP_SECRET) {
         message: text
       });
 
-      await fetch("https://api.vk.com/method/messages.send", {
-        method: "POST",
-        body: params
-      });
+const vkRes = await fetch("https://api.vk.com/method/messages.send", {
+  method: "POST",
+  body: params
+});
+
+const vkJson = await vkRes.json();
+console.log("VK response:", vkJson);
+
+if (vkJson.error) {
+  console.error("VK send error:", vkJson.error);
+}
     }
 
     res.json({ ok: true });
